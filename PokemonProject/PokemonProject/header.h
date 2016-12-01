@@ -17,4 +17,4 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 
 #pragma once
 
-randomNumGen(int min, int max);
+void randomNumGen(int min, int max);
