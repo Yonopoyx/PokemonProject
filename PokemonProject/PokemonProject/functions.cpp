@@ -15,6 +15,17 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 (which may then retain a copy of this assignment on its database for the purpose of future plagiarism checking)
 */
 
+<<<<<<< HEAD
+#include<iostream>
+using namespace std;
+
+void welcomeMessage();
+
+void welcomeMessage()
+{
+   cout << "Welcome to Pokemon Ink, a text-based pokemon battle simulator!" << endl; 
+}
+=======
 
 
 
@@ -76,3 +87,4 @@ void randomNumGen(int min, int max)
 {
 
 }
+>>>>>>> refs/remotes/origin/master
