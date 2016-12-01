@@ -15,3 +15,12 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 (which may then retain a copy of this assignment on its database for the purpose of future plagiarism checking)
 */
 
+void generateEnemyPokemon()
+{
+	randomNumGen(0, 100);
+}
+
+void randomNumGen(int min, int max)
+{
+
+}

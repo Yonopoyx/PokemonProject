@@ -17,10 +17,13 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 
 #include <iostream>
 #include "header.h"
+#include <string>
 
 using namespace std;
-
+//todo (walter): random encounters
 int main()
 {
+		
 
+	return 0;
 }
