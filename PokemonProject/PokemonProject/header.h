@@ -16,5 +16,37 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 */
 
 #pragma once
+#include <string>
 
-void randomNumGen(int min, int max);
+using namespace std;
+
+struct pokemon
+{
+	string name;
+	string type;
+	string move;
+
+	int health;
+	int damage;
+};
+
+//(Ben)
+void welcomeMessage();
+void choiceMessage();
+void confirmPokemon(pokemon player);
+void encounterMessage(pokemon enemy);
+
+int randomNumGen(int min, int max);
+
+
+pokemon getPlayerPokemon(char playerChoice);
+pokemon generateEnemyPokemon();
+
+void randomEncounter(pokemon player);
+
+//void attack(pokemon attacker, pokemon defender);
+void attack(pokemon attacker, pokemon &defender); //pass by reference
+
+double attackMultiplier(string attackType, string defendType);
+
+void run();
