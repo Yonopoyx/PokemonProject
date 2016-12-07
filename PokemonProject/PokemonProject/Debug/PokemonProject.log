@@ -1,5 +1,5 @@
 ﻿  functions.cpp
-c:\users\walte\documents\github\school projects\pokemonproject\pokemonproject\pokemonproject\functions.cpp(145): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\walte\documents\github\school projects\pokemonproject\pokemonproject\pokemonproject\functions.cpp(522): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+c:\users\walte\documents\github\school projects\pokemonproject\pokemonproject\pokemonproject\functions.cpp(146): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\walte\documents\github\school projects\pokemonproject\pokemonproject\pokemonproject\functions.cpp(617): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   PokemonProject.vcxproj -> C:\Users\walte\Documents\GitHub\School Projects\PokemonProject\PokemonProject\Debug\PokemonProject.exe
   PokemonProject.vcxproj -> C:\Users\walte\Documents\GitHub\School Projects\PokemonProject\PokemonProject\Debug\PokemonProject.pdb (Full PDB)

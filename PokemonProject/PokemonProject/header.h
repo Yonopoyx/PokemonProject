@@ -42,11 +42,13 @@ int randomNumGen(int min, int max);
 pokemon getPlayerPokemon(char playerChoice);
 pokemon generateEnemyPokemon();
 
-void randomEncounter(pokemon player);
+bool randomEncounter(pokemon player);
 
 //void attack(pokemon attacker, pokemon defender);
 void attack(pokemon attacker, pokemon &defender); //pass by reference
+bool hasFainted(pokemon &defender);
 
 double attackMultiplier(string attackType, string defendType);
 
 void run();
+bool postgame(int wins, int numBattles);	

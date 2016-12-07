@@ -21,89 +21,76 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 
 using namespace std;
 
-//todo (walter): random encounters
-
 int main()
 {
 	//Console formatting
 	cout.setf(ios::fixed, ios::floatfield);
 	cout.setf(ios::showpoint);
 	cout.precision(2);
-	//system("Color 6");
 
 	char playerChoice; //to choose player's starter
 	char playerConfirm; //to confirm choices
 	pokemon playerPokemon; //Player's starter pokemon
 
 	bool inBattle; //For initializing battle loop
+	bool isLive = true; //Holds game state
 	int numBattles = 0; //Tracks number of encounters in a wave
 	
-	//Start menu & explanation
+	//Start menu & story explanation
 	welcomeMessage();
 
-	//Player chooses starter
-	choiceMessage();
-	cin >> playerChoice;
-
-	//For player input error when choosing starter
-	while (playerChoice != 'b' && playerChoice != 'c' && playerChoice != 's')
+	while (isLive)
 	{
+		//Player chooses starter
 		choiceMessage();
 		cin >> playerChoice;
-	}
-	system("cls");
 
-	//Gets player pokemon stats
-	playerPokemon = getPlayerPokemon(playerChoice);
-	confirmPokemon(playerPokemon);
-	cin >> playerConfirm;
-
-	if (playerConfirm == 'y')
-	{
-		inBattle = true;
-
-		cout << endl << "Entering the tall grass..." << endl << endl;
-
-		system("pause");
+		//For player input error when choosing starter
+		while (playerChoice != 'b' && playerChoice != 'c' && playerChoice != 's')
+		{
+			choiceMessage();
+			cin >> playerChoice;
+		}
 		system("cls");
-	}
 
-	while(playerConfirm == 'n')
-	{
-		choiceMessage();
-		cin >> playerChoice;
-
+		//Gets player pokemon stats
 		playerPokemon = getPlayerPokemon(playerChoice);
 		confirmPokemon(playerPokemon);
 		cin >> playerConfirm;
 
+		//begin battle loop if ready
 		if (playerConfirm == 'y')
 		{
 			inBattle = true;
 
-			cout << endl <<  "Entering the tall grass..." << endl << endl;
+			cout << endl << "Entering the tall grass..." << endl << endl;
 
 			system("pause");
 			system("cls");
 		}
+
+		while (playerConfirm == 'n')
+		{
+			choiceMessage();
+			cin >> playerChoice;
+
+			playerPokemon = getPlayerPokemon(playerChoice);
+			confirmPokemon(playerPokemon);
+			cin >> playerConfirm;
+
+			if (playerConfirm == 'y')
+			{
+				inBattle = true;
+
+				cout << endl << "Entering the tall grass..." << endl << endl;
+
+				system("pause");
+				system("cls");
+			}
+		}
+		
+		//controls battle loop & alters game state
+		isLive = randomEncounter(playerPokemon);
 	}
-
-	//battle loop
-	randomEncounter(playerPokemon);
-	//you stopped at a pokemon center...
-
-	//Continue thru tall grass?
-
-	//resume battle
-	
-	//If yes,	
-		//init battle loop
-	
-	//battles - (heals every 3?)
-	//Exit menu
-
-	//End w/ battles completed
-	//Quit
-
 	return 0;
 }

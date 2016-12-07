@@ -1,4 +1,4 @@
-	/*
+/*
 Author: Ben Donahue & Walter Hill
 Class: Intro to Programming(CSI 140-08)
 Assignment: Final Project
@@ -15,20 +15,13 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 (which may then retain a copy of this assignment on its database for the purpose of future plagiarism checking)
 */
 
-
+#include <random>
+#include <time.h>
+#include"header.h"
 #include<iostream>
 using namespace std;
 
 void welcomeMessage();
-
-void welcomeMessage()
-{
-   cout << "Welcome to Pokemon Ink, a text-based pokemon battle simulator!" << endl; 
-}
-=======
->>>>>>> origin/master
-
-using namespace std;
 
 //(Ben)
 void welcomeMessage()
@@ -167,7 +160,7 @@ pokemon getPlayerPokemon(char playerChoice)
 		bulbasaur.name = "Bulbasaur";
 		bulbasaur.type = "Grass";
 		bulbasaur.health = 35;
-		bulbasaur.damage = 15;
+		bulbasaur.damage = 16;
 		bulbasaur.move = "Razor Leaf";
 
 
@@ -181,7 +174,7 @@ pokemon getPlayerPokemon(char playerChoice)
 		charmander.name = "Charmander";
 		charmander.type = "Fire";
 		charmander.health = 35;
-		charmander.damage = 15;
+		charmander.damage = 16;
 		charmander.move = "Ember";
 
 		return charmander;
@@ -194,7 +187,7 @@ pokemon getPlayerPokemon(char playerChoice)
 		squirtle.name = "Squirtle";
 		squirtle.type = "Water";
 		squirtle.health = 35;
-		squirtle.damage = 15;
+		squirtle.damage = 16;
 		squirtle.move = "Bubblebeam";
 
 
@@ -455,10 +448,17 @@ pokemon generateEnemyPokemon()
 		exit(1);
 	}
 }
-void randomEncounter(pokemon player)
+
+bool randomEncounter(pokemon player)
 {
-	bool inBattle = true;
-	int numBattles = 0;
+	bool fainted = false;
+	
+	int numBattles = 0; //increments battle loop
+	int playerFainted = 5; //exits battle loop
+
+	int battlesFought = 0;
+	int victories = 0;
+
 
 	while (numBattles < 5)
 	{
@@ -468,6 +468,8 @@ void randomEncounter(pokemon player)
 
 		encounterMessage(enemy);
 		cin >> battleAction;
+
+		battlesFought++;
 
 		//For player input error during battle
 		while (battleAction != 'a' && battleAction != 'r')
@@ -487,36 +489,121 @@ void randomEncounter(pokemon player)
 				if (battleAction == 'a')
 				{
 					attack(player, enemy);
-					//cout << player.name << " used" << /*playerPokemon.move <<*/ endl;
-					//cout << enemy.name << " Enemy HP: " << enemy.health << endl;
-					playerTurn = false;
+					cout << endl;
+					cout << player.name << " used " << player.move << "!" << endl;
+					cout << endl;
 
-					system("pause");
+					fainted = hasFainted(enemy);
+					if (fainted == true)
+					{
+						numBattles++;
+
+						victories++;
+						cout << endl << "The wild " << enemy.name << "has fainted." << endl;
+						cout << "Your " << player.name << "'s HP: " << player.health << endl;
+						cout << endl << "Continue thru the tall grass." << endl;
+						system("pause");
+						system("cls");
+					}
+					else
+					{
+						playerTurn = false;
+						system("pause");
+					}
 				}
 				else if (battleAction == 'r')
 				{
-					//run()
-					//inBattle = false;
-
+					int runChance = randomNumGen(0, 49);
+					if (runChance >= 0 && runChance <= 34)
+					{
+						cout << "" << endl;
+						cout << "You escaped!" << endl;
+						cout << "" << endl;
+						system("pause");
+						system("cls");
+						enemy = generateEnemyPokemon();
+						encounterMessage(enemy);
+						cin >> battleAction;
+					}
+					else
+					{
+						cout << "" << endl;
+						cout << "Can't escape!" << endl;
+						cout << "" << endl;
+						battleAction = 'a';
+						playerTurn = false;
+					}
 				}
 			}
 			else
 			{
 				attack(enemy, player);
-				//cout << enemy.name << " used" << /*playerPokemon.move <<*/ endl;
-				//cout << enemy.name << " HP: " << enemy.health << endl;
-				playerTurn = true;
+				cout << endl;
+				cout << "The wild " << enemy.name << " used " << enemy.move << "!" << endl;
+				cout << "Your " << player.name << "'s HP: " << player.health << endl;
+				cout << endl;
 
-				system("pause");
+				fainted = hasFainted(player);
+				if (fainted == true)
+				{
+					numBattles = playerFainted;
+					cout << "Your pokemon has fainted." << endl;
+					system("pause");
+					system("cls");
+				}
+				else
+				{
+					playerTurn = true;
+					system("pause");
+				}
 			}
 		}
-		numBattles++;
+		//numBattles++;
 
 		//should running count towards num battles per wave
 		//on death/enemy defeat, increment num battles
 
 	}
 	//healed every 5
+	return postgame(victories, battlesFought);
+}
+
+bool postgame(int battlesWon, int battlesFought)
+{
+	char gameControl; 
+
+	cout << "You did well. But with more training you could go even further!" << endl;
+	
+	system("pause");
+	system("cls");
+
+	cout << "STATS" << endl;
+	cout << "==============================================================" << endl << endl;
+	cout << "Pokemon encountered | "<< battlesFought << endl;
+	cout << "Victories | " << battlesWon << endl << endl;
+
+	cout << "Do you want to continue your journey or return home?" << endl;
+	cout << "Press 'c' to continue or 'q' to quit the game." << endl;
+	cin >> gameControl;
+	
+	if (gameControl == 'c')
+	{
+		return true;
+	}
+	else if (gameControl == 'q')
+	{
+		return false;
+	}
+	while (gameControl != 'c' && gameControl!= 'q' )
+	{
+		cout << "Please enter a valid command" << endl;
+		cout << "Press 'c' to continue or 'q' to quit the game." << endl;
+
+		cin >> gameControl;
+	}
+
+	return false;
+
 }
 
 void attack(pokemon attacker, pokemon &defender)//pass by reference - can just re-cout stats and hp should be lower
@@ -527,7 +614,7 @@ void attack(pokemon attacker, pokemon &defender)//pass by reference - can just r
 	double multiplier = attackMultiplier(attackerType, defenderType);
 	double attackDamage = attacker.damage * multiplier;	 
 										 
-	defender.health -= attackDamage;
+	defender.health =  defender.health - attackDamage;
 	//return defender.health;
 }
 
@@ -613,12 +700,5 @@ double attackMultiplier(string attackType, string defendType)
 			return dmgMultiplier;
 		}
 	}
-
-	return -1;
+	return 1;
 }
-
-void run()
-{
-
-}
->>>>>>> refs/remotes/origin/master
