@@ -17,67 +17,70 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 
 #include <random>
 #include <time.h>
-#include"header.h"
 #include<iostream>
+#include"header.h"
+
 using namespace std;
 
-void welcomeMessage();
+int battlesFought = 0;
+int victories = 0;
+int damageDealt = 0;//Player lifetime stats
 
-//(Ben)
+//Starting text (Ben)
 void welcomeMessage()
 {
 	cout << "Welcome to Pokemon Ink, a text-based Pokemon battle simulator!" << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "I am Professor Evergreen from Visual Studios, the company behind this simulation." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "This simulation world is filled with many kinds of Pokemon for you to meet and battle with." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "What are Pokemon? For some, Pokemon are pets. For others, and the purpose of this" << endl;
 	cout << "simulation, Pokemon are for battling other Pokemon to protect their trainer." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "Since this is only a simulation, Pokemon cannot be caught." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "In this simulation, you will be given several choices of Pokemon to choose from." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "After you select your Pokemon, this world will play out elimination-style:" << endl;
 	cout << "Keep battling until all of your Pokemon have been KO-ed!" << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "How does battling work? Allow me to explain." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "When an enemy Pokemon appears, you will have the option to attack or run away." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "If you attack, the enemy Pokemon will take damage, then attack your Pokemon" << endl;
 	cout << "in a turn-based sequence until the health points (or HP for short) of one" << endl;
 	cout << "Pokemon reaches 0, signifying a KO." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "When the enemy Pokemon is KO-ed, it means you win the battle!" << endl;
 	cout << "But if your Pokemon gets KO-ed, you lose the battle and your simulation is over." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "Running away allows you to leave the battle and continue your simulation, but" << endl;
 	cout << "this may not work, and you will be forced to attack for the rest of the battle." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "Now that you know the rules, get out there and win as many battles as you can, and have fun!" << endl;
@@ -85,42 +88,46 @@ void welcomeMessage()
 	system("pause");
 	system("cls");
 	cout << "First things first however, you'll need a Pokemon." << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 }
+
+//Text for choosing pokemon (Ben)
 void choiceMessage()
 {
-	cout << "You can pick from the following choices:" << endl;
-	cout << "" << endl;
+	cout << "You can pick from the following Pokemon:" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "Bulbasaur, the grass Pokemon!" << endl;
-	cout << "" << endl;
-	system("pause");
-	system("cls");
-	cout << "Bulbasaur, the grass Pokemon!" << endl;
-	cout << "Charmander, the fire Pokemon!" << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "Bulbasaur, the grass Pokemon!" << endl;
 	cout << "Charmander, the fire Pokemon!" << endl;
-	cout << "Squirtle, the water Pokemon!" << endl;
-	cout << "" << endl;
+	cout << endl;
 	system("pause");
 	system("cls");
 	cout << "Bulbasaur, the grass Pokemon!" << endl;
 	cout << "Charmander, the fire Pokemon!" << endl;
 	cout << "Squirtle, the water Pokemon!" << endl;
-	cout << "" << endl;
+	cout << endl;
+	system("pause");
+	system("cls");
+	cout << "Bulbasaur, the grass Pokemon!" << endl;
+	cout << "Charmander, the fire Pokemon!" << endl;
+	cout << "Squirtle, the water Pokemon!" << endl;
+	cout << endl;
 	cout << "If you chose Bulbasaur, enter 'b'. If you chose Charmander," << endl;
 	cout << "enter 'c'. If you chose Squirtle, enter 's'." << endl;
-	cout << "" << endl;
+	cout << endl;
 	cout << "Please select a Pokemon:" << endl;
-	cout << "" << endl;
+	cout << endl;
 
 }
+
+//Confirm player's pokemon choice (Ben)
 void confirmPokemon(pokemon player)
 {
 	cout << "You chose..." << endl;
@@ -132,10 +139,12 @@ void confirmPokemon(pokemon player)
 	cout << "Are you sure this is the pokemon for you?" << endl;
 	cout << "Enter 'y' yes or 'n' for no" << endl;
 }
+
+//Displays text for random encounters (Ben)
 void encounterMessage(pokemon enemyPokemon)
 {
 	cout << "A wild " << enemyPokemon.name << " appeared!" << endl << endl;
-	cout << "Attack with 'a' " << endl;
+	cout << "Battle with 'b' " << endl;
 	cout << "Attempt to run with 'r' " << endl;
 
 }
@@ -150,6 +159,177 @@ int randomNumGen(int min, int max)
 	return num;
 }
 
+//The random encounter battle loop - allows player to run or fight (Ben/Walter)
+bool randomEncounter(pokemon player)
+{
+	bool fainted = false; //checks pokemon health
+	
+	int numBattles = 0; //increments battle loop
+	int maxBattles = 5; //exits battle loop
+
+	while (numBattles < 5)
+	{
+		pokemon enemy = generateEnemyPokemon();
+		char battleAction;
+		bool playerTurn = true;
+
+		cout << "[Battle no. " << (1 + numBattles) << " of " << maxBattles << "]" << endl;
+		encounterMessage(enemy);
+		cin >> battleAction;
+
+		//For player input error during battle
+		while (battleAction != 'b' && battleAction != 'r')
+		{
+			cout << "Please enter a valid move command" << endl << endl;
+			cout << "Battle with 'b' " << endl;
+			cout << "Attempt to run with 'r' " << endl;
+
+			cin >> battleAction;
+		}
+
+		//turn based battle loop
+		while (player.health > 0 && enemy.health > 0)
+		{
+			if (playerTurn)
+			{
+				if (battleAction == 'b')
+				{
+					
+					cout << endl;
+					cout << player.name << " used " << player.move << "!" << endl;
+					attack(player, enemy);
+					cout << endl;
+
+					fainted = hasFainted(enemy);
+					if (fainted == true)
+					{
+						numBattles++;
+						
+						battlesFought++;
+						victories++;
+
+						cout << endl << "The wild " << enemy.name << " has fainted." << endl << endl;
+						cout << "Your " << player.name << "'s HP: " << player.health << endl;
+						cout << endl << "Continue thru the tall grass." << endl;
+						system("pause");
+						system("cls");
+					}
+					else
+					{
+						playerTurn = false;
+						system("pause");
+					}
+				}
+				else if (battleAction == 'r')
+				{
+					
+
+					int runChance = randomNumGen(0, 49);
+					if (runChance >= 0 && runChance <= 34)
+					{
+						battlesFought++;
+
+						cout << endl;
+						cout << "You escaped!" << endl;
+						cout << "" << endl;
+						system("pause");
+						system("cls");
+						enemy = generateEnemyPokemon();
+						cout << "[Battle no. " << (1 + numBattles) << " of " << maxBattles << "]" << endl;
+						encounterMessage(enemy);
+						cin >> battleAction;
+					}
+					else
+					{
+						cout << endl;
+						cout << "Can't escape! Now you must battle"<< endl << endl;
+						battleAction = 'b';
+						playerTurn = false;
+					}
+				}
+			}
+			else
+			{
+				cout << endl;
+				cout << "The wild " << enemy.name << " used " << enemy.move << "!" << endl;
+				attack(enemy, player);
+
+				if (player.health <= 0)
+				{
+					cout << "Your " << player.name << "'s HP: 0" << endl;
+					cout << endl;
+				}
+				else
+				{
+					cout << "Your " << player.name << "'s HP: " << player.health << endl;
+					cout << endl;
+				}
+
+				fainted = hasFainted(player);
+				if (fainted == true)
+				{
+					numBattles = maxBattles;
+					cout << "Your pokemon has fainted." << endl;
+					system("pause");
+					system("cls");
+				}
+				else
+				{
+					playerTurn = true;
+					system("pause");
+				}
+			}
+		}
+	}
+	return postgame();
+}
+
+//Displays lifetime stats
+//Allows user to exit/restart (Walter)
+bool postgame()
+{
+	char gameControl; 
+
+	cout << "You did well. But with more training you could go even further!" << endl;
+	
+	system("pause");
+	system("cls");
+
+	cout << "STATS" << endl;
+	cout << "==============================================================" << endl << endl;
+	cout << "Pokemon encountered | "<< battlesFought << endl;
+	cout << "Victories | " << victories << endl << endl;
+
+	cout << "Damage Dealt | " << damageDealt << endl << endl;
+	
+
+
+	cout << "Do you want to continue your journey or return home?" << endl;
+	cout << "Press 'c' to continue or 'q' to quit the game." << endl;
+	cin >> gameControl;
+	
+	if (gameControl == 'c')
+	{
+		system("cls");
+		return true;
+	}
+	else if (gameControl == 'q')
+	{
+		system("cls");
+		return false;
+	}
+	while (gameControl != 'c' && gameControl!= 'q' )
+	{
+		cout << "Please enter a valid command" << endl;
+		cout << "Press 'c' to continue or 'q' to quit the game." << endl;
+
+		cin >> gameControl;
+	}
+
+	return false;
+
+}
+
 //The player can pick from 1 of 3 starters(Walter)
 pokemon getPlayerPokemon(char playerChoice)
 {
@@ -159,7 +339,7 @@ pokemon getPlayerPokemon(char playerChoice)
 
 		bulbasaur.name = "Bulbasaur";
 		bulbasaur.type = "Grass";
-		bulbasaur.health = 35;
+		bulbasaur.health = 70;
 		bulbasaur.damage = 16;
 		bulbasaur.move = "Razor Leaf";
 
@@ -173,7 +353,7 @@ pokemon getPlayerPokemon(char playerChoice)
 
 		charmander.name = "Charmander";
 		charmander.type = "Fire";
-		charmander.health = 35;
+		charmander.health = 70;
 		charmander.damage = 16;
 		charmander.move = "Ember";
 
@@ -186,7 +366,7 @@ pokemon getPlayerPokemon(char playerChoice)
 
 		squirtle.name = "Squirtle";
 		squirtle.type = "Water";
-		squirtle.health = 35;
+		squirtle.health = 70;
 		squirtle.damage = 16;
 		squirtle.move = "Bubblebeam";
 
@@ -200,7 +380,7 @@ pokemon getPlayerPokemon(char playerChoice)
 	}
 }
 
-// (Walter)
+//randomly genereates a wild pokemon (Ben/Walter)
 pokemon generateEnemyPokemon()
 {
 	int randNum;
@@ -255,8 +435,8 @@ pokemon generateEnemyPokemon()
 
 		rattata.name = "Rattata";
 		rattata.type = "Normal";
-		rattata.health = 32;
-		rattata.damage = 16;
+		rattata.health = 28;
+		rattata.damage = 10;
 		rattata.move = "Hyper Fang";
 
 		return rattata;
@@ -269,7 +449,7 @@ pokemon generateEnemyPokemon()
 
 		machop.name = "Machop";
 		machop.type = "Fighting";
-		machop.health = 30;
+		machop.health = 32;
 		machop.damage = 12;
 		machop.move = "Low Kick";
 
@@ -312,7 +492,7 @@ pokemon generateEnemyPokemon()
 		onix.name = "Onix";
 		onix.type = "Rock";
 		onix.health = 45;
-		onix.damage = 10;
+		onix.damage = 8;
 		onix.move = "Rock Throw";
 
 		return onix;
@@ -325,7 +505,7 @@ pokemon generateEnemyPokemon()
 
 		cubone.name = "Cubone";
 		cubone.type = "Ground";
-		cubone.health = 35;
+		cubone.health = 34;
 		cubone.damage = 12;
 		cubone.move = "Bone Club";
 		return cubone;
@@ -352,7 +532,7 @@ pokemon generateEnemyPokemon()
 
 		spearow.name = "Spearow";
 		spearow.type = "Flying";
-		spearow.health = 35;
+		spearow.health = 30;
 		spearow.damage = 12;
 		spearow.move = "Wing Attack";
 
@@ -381,7 +561,7 @@ pokemon generateEnemyPokemon()
 		abra.name = "Abra";
 		abra.type = "Psychic";
 		abra.health = 32;
-		abra.damage = 12;
+		abra.damage = 8;
 		abra.move = "Psybeam";
 
 		return abra;
@@ -394,8 +574,8 @@ pokemon generateEnemyPokemon()
 
 		caterpie.name = "Caterpie";
 		caterpie.type = "Bug";
-		caterpie.health = 40;
-		caterpie.damage = 14;
+		caterpie.health = 28;
+		caterpie.damage = 10;
 		caterpie.move = "Bug Bite";
 
 		return caterpie;
@@ -416,17 +596,17 @@ pokemon generateEnemyPokemon()
 	}
 
 	//Snorunt
-	else if (randNum >= 45 || randNum <= 47)
+	else if (randNum >= 45 && randNum <= 47)
 	{
 		pokemon snorunt;
 
 		snorunt.name = "Snorunt";
 		snorunt.type = "Ice";
 		snorunt.health = 35;
-		snorunt.damage = 10;
+		snorunt.damage = 12;
 		snorunt.move = "Aurora Beam";
 
-			return snorunt;
+		return snorunt;
 	}
 
 	//Magikarp
@@ -435,10 +615,19 @@ pokemon generateEnemyPokemon()
 		pokemon magikarp;
 
 		magikarp.name = "Magikarp";
-		magikarp.type = "Water";
+		magikarp.type = "magikarpType";
 		magikarp.health = 20;
 		magikarp.damage = 0;
-		magikarp.move = "splash";
+
+		int magikarpChance = randomNumGen(0, 49);
+		if (magikarpChance >= 0 && magikarpChance <= 48)
+		{
+			magikarp.move = "Splash";
+		}
+		else
+		{
+			magikarp.move = "Hyperbeam! Just kidding. Magikarp used Splash";
+		}
 
 		return magikarp;
 	}
@@ -449,186 +638,27 @@ pokemon generateEnemyPokemon()
 	}
 }
 
-bool randomEncounter(pokemon player)
+
+//Applies attacker damage + multiplier to defending pokemon's health (Walter)
+void attack(pokemon attacker, pokemon &defender)
 {
-	bool fainted = false;
-	
-	int numBattles = 0; //increments battle loop
-	int playerFainted = 5; //exits battle loop
+	bool isPlayerAttack = true;
 
-	int battlesFought = 0;
-	int victories = 0;
-
-
-	while (numBattles < 5)
-	{
-		pokemon enemy = generateEnemyPokemon();
-		char battleAction;
-		bool playerTurn = true;
-
-		encounterMessage(enemy);
-		cin >> battleAction;
-
-		battlesFought++;
-
-		//For player input error during battle
-		while (battleAction != 'a' && battleAction != 'r')
-		{
-			cout << "Please enter a valid move command" << endl << endl;
-			cout << "Attack with 'a' " << endl;
-			cout << "Attempt to run with 'r' " << endl;
-
-			cin >> battleAction;
-		}
-
-		//turn based battle loop
-		while (player.health > 0 && enemy.health > 0)
-		{
-			if (playerTurn)
-			{
-				if (battleAction == 'a')
-				{
-					attack(player, enemy);
-					cout << endl;
-					cout << player.name << " used " << player.move << "!" << endl;
-					cout << endl;
-
-					fainted = hasFainted(enemy);
-					if (fainted == true)
-					{
-						numBattles++;
-
-						victories++;
-						cout << endl << "The wild " << enemy.name << "has fainted." << endl;
-						cout << "Your " << player.name << "'s HP: " << player.health << endl;
-						cout << endl << "Continue thru the tall grass." << endl;
-						system("pause");
-						system("cls");
-					}
-					else
-					{
-						playerTurn = false;
-						system("pause");
-					}
-				}
-				else if (battleAction == 'r')
-				{
-					int runChance = randomNumGen(0, 49);
-					if (runChance >= 0 && runChance <= 34)
-					{
-						cout << "" << endl;
-						cout << "You escaped!" << endl;
-						cout << "" << endl;
-						system("pause");
-						system("cls");
-						enemy = generateEnemyPokemon();
-						encounterMessage(enemy);
-						cin >> battleAction;
-					}
-					else
-					{
-						cout << "" << endl;
-						cout << "Can't escape!" << endl;
-						cout << "" << endl;
-						battleAction = 'a';
-						playerTurn = false;
-					}
-				}
-			}
-			else
-			{
-				attack(enemy, player);
-				cout << endl;
-				cout << "The wild " << enemy.name << " used " << enemy.move << "!" << endl;
-				cout << "Your " << player.name << "'s HP: " << player.health << endl;
-				cout << endl;
-
-				fainted = hasFainted(player);
-				if (fainted == true)
-				{
-					numBattles = playerFainted;
-					cout << "Your pokemon has fainted." << endl;
-					system("pause");
-					system("cls");
-				}
-				else
-				{
-					playerTurn = true;
-					system("pause");
-				}
-			}
-		}
-		//numBattles++;
-
-		//should running count towards num battles per wave
-		//on death/enemy defeat, increment num battles
-
-	}
-	//healed every 5
-	return postgame(victories, battlesFought);
-}
-
-bool postgame(int battlesWon, int battlesFought)
-{
-	char gameControl; 
-
-	cout << "You did well. But with more training you could go even further!" << endl;
-	
-	system("pause");
-	system("cls");
-
-	cout << "STATS" << endl;
-	cout << "==============================================================" << endl << endl;
-	cout << "Pokemon encountered | "<< battlesFought << endl;
-	cout << "Victories | " << battlesWon << endl << endl;
-
-	cout << "Do you want to continue your journey or return home?" << endl;
-	cout << "Press 'c' to continue or 'q' to quit the game." << endl;
-	cin >> gameControl;
-	
-	if (gameControl == 'c')
-	{
-		return true;
-	}
-	else if (gameControl == 'q')
-	{
-		return false;
-	}
-	while (gameControl != 'c' && gameControl!= 'q' )
-	{
-		cout << "Please enter a valid command" << endl;
-		cout << "Press 'c' to continue or 'q' to quit the game." << endl;
-
-		cin >> gameControl;
-	}
-
-	return false;
-
-}
-
-void attack(pokemon attacker, pokemon &defender)//pass by reference - can just re-cout stats and hp should be lower
-{
 	string attackerType = attacker.type;
 	string defenderType = defender.type;
 
 	double multiplier = attackMultiplier(attackerType, defenderType);
 	double attackDamage = attacker.damage * multiplier;	 
-										 
-	defender.health =  defender.health - attackDamage;
-	//return defender.health;
-}
-
-bool hasFainted(pokemon &defender)
-{
-	if (defender.health <= 0)
+	
+	if (isPlayerAttack)//tracks player damage dealt
 	{
-		cout << defender.name << " fainted!" << endl;
-		//pokemon faints - fuction or in here??
-		return true;
+		damageDealt += attackDamage;
+		isPlayerAttack = false;
 	}
-	return false;	
+	defender.health =  defender.health - attackDamage;
 }
 
+//Checks pokemon types to determine effectiveness & ATK multiplier (Ben/Walter)
 double attackMultiplier(string attackType, string defendType)
 {
 	double dmgMultiplier;
@@ -647,12 +677,6 @@ double attackMultiplier(string attackType, string defendType)
 			dmgMultiplier = 2;
 			return dmgMultiplier;
 		}
-		//Standard damage
-		else
-		{
-			dmgMultiplier = 1;
-			return dmgMultiplier;
-		}
 	}
 
 	else if (attackType == "Water")
@@ -667,13 +691,6 @@ double attackMultiplier(string attackType, string defendType)
 		else if (defendType == "Rock" || defendType == "Ground" || defendType == "Fire")
 		{
 			dmgMultiplier = 2;
-			return dmgMultiplier;
-		}
-
-		//Standard damage
-		else
-		{
-			dmgMultiplier = 1;
 			return dmgMultiplier;
 		}
 	}
@@ -693,12 +710,116 @@ double attackMultiplier(string attackType, string defendType)
 			dmgMultiplier = 2;
 			return dmgMultiplier;
 		}
-		//Standard damage
-		else
+	}
+	else if (attackType == "Ground")
+	{
+		if (defendType == "Fire")
 		{
-			dmgMultiplier = 1;
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+		else if (defendType == "Grass" || defendType == "Water")
+		{
+			dmgMultiplier = 0.5;
+			cout << "It's not very effective..." << endl;
 			return dmgMultiplier;
 		}
 	}
+	else if (attackType == "Poison")
+	{
+		if (defendType == "Grass")
+		{
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+	}
+	else if (attackType == "Electric")
+	{
+		if (defendType == "Water")
+		{
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+		else if (defendType == "Grass")
+		{
+			dmgMultiplier = 0.5;
+			cout << "It's not very effective..." << endl;
+			return dmgMultiplier;
+		}
+	}
+	else if (attackType == "Rock")
+	{
+		if (defendType == "Fire")
+		{
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+		else if (defendType == "Grass")
+		{
+			dmgMultiplier = 0.5;
+			cout << "It's not very effective..." << endl;
+			return dmgMultiplier;
+		}
+	}
+	else if (attackType == "Bug")
+	{
+		if (defendType == "Grass")
+		{
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+		else if (defendType == "Fire")
+		{
+			dmgMultiplier = 0.5;
+			cout << "It's not very effective..." << endl;
+			return dmgMultiplier;
+		}
+	}
+	else if (attackType == "Flying")
+	{
+		if (defendType == "Grass")
+		{
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+	}
+	else if (attackType == "Ice")
+	{
+		if (defendType == "Grass")
+		{
+			dmgMultiplier = 2;
+			cout << "It's super effective!" << endl;
+			return dmgMultiplier;
+		}
+		else if (defendType == "Fire" || defendType == "Water")
+		{
+			dmgMultiplier = 0.5;
+			cout << "It's not very effective..." << endl;
+			return dmgMultiplier;
+		}
+	}
+	else if (attackType == "magikarpType")
+	{
+		cout << "BUT NOTHING HAPPENED." << endl;
+	}
+
+	//Standard damage
 	return 1;
+}
+
+//Checks if pokemon has zero health left (Walter)
+bool hasFainted(pokemon &defender)
+{
+	if (defender.health <= 0)
+	{
+		//pokemon faints - fuction or in here??
+		return true;
+	}
+	return false;
 }

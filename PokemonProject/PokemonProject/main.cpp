@@ -15,9 +15,9 @@ academic staff; and/or - Communicate a copy of this assignment to a plagiarism c
 (which may then retain a copy of this assignment on its database for the purpose of future plagiarism checking)
 */
 
-#include <iostream>	
-#include "header.h"
+#include <iostream>
 #include <string>
+#include "header.h"
 
 using namespace std;
 
@@ -27,6 +27,7 @@ int main()
 	cout.setf(ios::fixed, ios::floatfield);
 	cout.setf(ios::showpoint);
 	cout.precision(2);
+
 
 	char playerChoice; //to choose player's starter
 	char playerConfirm; //to confirm choices
